@@ -15,7 +15,7 @@ const uploadImage = (req , res) => {
     const path = String(req.file.filename)
     try{
       res.status(200).json({
-        path : `https://52.221.210.220:5000/download/${path}` 
+        path : `http://52.221.210.220:5000/download/${path}` 
       })
       
     }
