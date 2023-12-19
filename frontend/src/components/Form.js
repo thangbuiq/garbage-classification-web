@@ -6,29 +6,35 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
     
     
 
-    const uploadImage = async(image) => {
-       setError(false)
-       setIsPending(true)
-       const formData = new FormData()
-       formData.append('image' , image)
-       try{
-           const res = await fetch('http://52.221.210.220:8000/upload',{
-           method : 'POST',
-           body : formData,
-           'content-type': 'multipart/form-data'
-           })
-           if(!res.ok){
-            throw Error('Internal Server Error')
-           }
-           const data = await res.json()
-           setUrl(data.path)
-           setIsPending(false)
-       }catch(error){
-           console.log(error)
-           setIsPending(false)
-           setError(true)
-       }
+  const uploadImage = async (image) => {
+    setError(false);
+    setIsPending(true);
+
+    const formData = new FormData();
+    formData.append('image', image);
+
+    try {
+      const res = await fetch('http://52.221.210.220:8000/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {
+              // Note: 'Content-Type' is automatically set by FormData
+          },
+      });
+
+        if (!res.ok) {
+          throw Error('Internal Server Error');
+        }
+
+        const data = await res.json();
+        setUrl(data.path);
+        setIsPending(false);
+    } catch (error) {
+      console.log(error);
+      setIsPending(false);
+      setError(true);
     }
+  };
 
 
 
