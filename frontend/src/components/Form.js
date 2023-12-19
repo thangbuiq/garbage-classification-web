@@ -11,30 +11,32 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
     setIsPending(true);
 
     const formData = new FormData();
-    formData.append('image', image);
+    formData.append('file', image);  // Use 'file' instead of 'image'
 
     try {
       const res = await fetch('http://52.221.210.220:8000/upload', {
-          method: 'POST',
-          body: formData,
-          headers: {
-              // Note: 'Content-Type' is automatically set by FormData
-          },
+        method: 'POST',
+        body: formData,
+        headers: {
+          'accept': 'application/json',
+          // Note: 'Content-Type' is automatically set by FormData
+        },
       });
 
-        if (!res.ok) {
-          throw Error('Internal Server Error');
-        }
+      if (!res.ok) {
+        throw Error('Internal Server Error');
+      }
 
-        const data = await res.json();
-        setUrl(data.path);
-        setIsPending(false);
+      const data = await res.json();
+      setUrl(data.path);
+      setIsPending(false);
     } catch (error) {
       console.log(error);
       setIsPending(false);
       setError(true);
     }
   };
+
 
 
 
