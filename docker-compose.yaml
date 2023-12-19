@@ -7,33 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     ports:
-      - "5000:5000"
-    entrypoint: ["npm", "run", "start"]
-    networks:
-      - proenv_network
-
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    container_name: frontend
-    entrypoint: ["npm", "run", "build"]
+      - "8000:8000"
     volumes:
-      - ./frontend/build:/opt/app/build
-    networks:
-      - proenv_network
-
-  ingress:
-    image: nginx
-    container_name: ingress
-    ports:
-      - "8000:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./frontend/build:/var/www/dist/
-    depends_on:
-      - frontend
-    restart: always
+      - ./backend:/opt/app
     networks:
       - proenv_network
 

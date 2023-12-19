@@ -1,7 +1,8 @@
-FROM node:18.16.0-alpine3.17 AS build
+FROM python:3.10.12-alpine3.17
 WORKDIR /opt/app
-COPY . .
+COPY requirements.txt .
 RUN \
-  npm install && \
-  npm install --save-dev nodemon
-EXPOSE 5000
+  pip install --upgrade pip \
+  && pip install -r requirements.txt
+EXPOSE 8000
+ENTRYPOINT [ "uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000" ]
