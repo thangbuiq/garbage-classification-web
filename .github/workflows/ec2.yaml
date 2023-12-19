@@ -1,22 +1,44 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
+name: Deploy Frontend
+run-name: ${{ github.actor }} is deploying ${{ github.sha }}
 on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  build:
+  deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      
-      - name: Build frontend
-        working-directory: frontend
-        run: |
-          docker build --tag ${{ secrets.DOCKER_REGISTRY }}/frontend: .
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
 
-      
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm install && npm install --save-dev react-scripts 
+
+      - name: Build website
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "./frontend/build"
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
