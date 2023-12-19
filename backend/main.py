@@ -13,7 +13,7 @@ UPLOAD_DIR = Path("upload")
 @app.get("/download/{id}")
 async def get_image(id: str):
     try:
-        return FileResponse(path=str(UPLOAD_DIR / id))
+        return {"path": f"http://52.221.210.220:8000/{UPLOAD_DIR}/{id}"}
     except FileNotFoundError:
         return {"error": "Image not found"}
 
