@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ProEnv",
+  "name": "Protect Environment App",
   "icons": [
     {
       "src": "favicon.ico",

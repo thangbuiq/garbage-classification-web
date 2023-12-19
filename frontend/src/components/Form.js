@@ -12,7 +12,7 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
        const formData = new FormData()
        formData.append('image' , image)
        try{
-           const res = await fetch('http://backend:5000/upload',{
+           const res = await fetch('http://localhost:5000/upload',{
            method : 'POST',
            body : formData,
            'content-type': 'multipart/form-data'
@@ -57,7 +57,7 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
       <p className='text-center font-thin text-xs text-slate-400 mb-2'>File should be Jpeg , Png...</p>
       <div  {...getRootProps({className :'md:h-52 sm:h-44 h-auto bg-light-grey border-2 border-light-blue border-dashed rounded-md'})}>
          <input {...getInputProps({name : 'image'})}/>
-         <img src={bgimage} className='max-w-1/3 mx-auto mt-4' />
+         <img src={bgimage} className='max-w-1/3 mx-auto mt-4' draggable="false" style={{ userDrag: 'none' }} />
          <p className='text-slate-400 md:text-md text-center mt-4 text-sm'>Drag & Drop your image here</p>
       </div>
       <p className='text-center font-normal text-slate-400 text-md mt-2 mb-2'>Or</p>

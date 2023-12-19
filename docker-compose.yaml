@@ -8,6 +8,9 @@ services:
     container_name: backend
     ports:
       - "5000:5000"
+    volumes:
+      - ./backend:/opt/app
+    entrypoint: ["npm", "run", "start"]
     networks:
       - proenv_network
 
@@ -18,6 +21,9 @@ services:
     container_name: frontend
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/opt/app
+    entrypoint: ["npm", "run", "start"]
     depends_on:
       - backend
     networks:
@@ -26,4 +32,4 @@ services:
 networks:
   proenv_network:
     name: proenv_network
-    driver: overlay
+    driver: bridge
