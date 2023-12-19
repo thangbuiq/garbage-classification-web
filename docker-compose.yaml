@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "5000:5000"
+    networks:
+      - proenv_network
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - proenv_network
+
+networks:
+  proenv_network:
+    name: proenv_network
+    driver: overlay
