@@ -12,7 +12,7 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
        const formData = new FormData()
        formData.append('image' , image)
        try{
-           const res = await fetch('http://localhost:5000/upload',{
+           const res = await fetch('https://52.221.210.220:5000/upload',{
            method : 'POST',
            body : formData,
            'content-type': 'multipart/form-data'
