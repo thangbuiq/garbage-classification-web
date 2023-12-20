@@ -7,9 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     ports:
-      - "8000:8000"
+      - "443:443"
     volumes:
       - ./backend:/opt/app
+      - /etc/pki/:/etc/pki
     networks:
       - proenv_network
 
