@@ -1,5 +1,4 @@
 from fastapi import FastAPI, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pathlib import Path
 import uvicorn
@@ -8,21 +7,6 @@ import os
 import ssl
 
 app = FastAPI()
-
-# CORS configuration
-origins = [
-    "https://thangbuiq.github.io/simple_mlops/",
-    "https://thangbuiq.github.io",
-    "http://localhost:3000",
-]
-
-app.add_middleware(
-    # CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Define the upload directory
 UPLOAD_DIR = Path("upload")
