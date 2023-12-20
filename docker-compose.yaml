@@ -20,7 +20,7 @@ services:
     container_name: frontend
     volumes:
       - ./frontend/:/opt/app/
-    entrypoint: ["sh", "-c", "npm run build"]
+    entrypoint: ["sh", "-c", "npm install -g react-scripts && npm run build"]
     depends_on:
       - backend
     networks:
