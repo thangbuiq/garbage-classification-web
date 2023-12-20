@@ -34,7 +34,7 @@ UPLOAD_DIR = Path("upload")
 @app.get("/download/{id}")
 async def get_image(id: str):
     try:
-        return {"path": f"http://52.221.210.220:443/{UPLOAD_DIR}/{id}"}
+        return {"path": f"https://52.221.210.220:8000/{UPLOAD_DIR}/{id}"}
     except FileNotFoundError:
         return {"error": "Image not found"}
 
@@ -54,4 +54,4 @@ async def upload_image(file: UploadFile = File(...)):
         return {"error": f"Server error: {str(e)}"}
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=443, ssl=ssl_context, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, ssl=ssl_context, reload=True)
