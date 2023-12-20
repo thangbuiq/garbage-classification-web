@@ -17,6 +17,7 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
       const res = await fetch('https://52.221.210.220:8000/upload', {
         method: 'POST',
         body: formData,
+        mode: 'no-cors',
         headers: {
           'accept': 'application/json',
           // Note: 'Content-Type' is automatically set by FormData
