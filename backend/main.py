@@ -16,9 +16,6 @@ origins = [
     "http://localhost:3000",
 ]
 
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-ssl_context.load_cert_chain('/etc/pki/tls/certs/localhost.crt', keyfile='/etc/pki/tls/private/localhost.key')
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -54,4 +51,11 @@ async def upload_image(file: UploadFile = File(...)):
         return {"error": f"Server error: {str(e)}"}
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, ssl=ssl_context, reload=True)
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        ssl_keyfile='/etc/pki/tls/private/localhost.key',
+        ssl_certfile='/etc/pki/tls/certs/localhost.crt',
+        reload=True
+    )
