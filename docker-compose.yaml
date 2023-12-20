@@ -20,11 +20,21 @@ services:
     container_name: frontend
     volumes:
       - ./frontend/:/opt/app/
-    entrypoint: ["npm", "run", "start"]
+    entrypoint: ["sh", "-c", "npm run build"]
     depends_on:
       - backend
+    networks:
+      - proenv_network
+
+  ingress:
+    image: nginx:alpine
+    container_name: ingress
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html
     ports:
-      - 3000:3000
+      - 8088:80
+    depends_on:
+      - frontend
     networks:
       - proenv_network
 

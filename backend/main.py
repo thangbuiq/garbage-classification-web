@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pathlib import Path
 import uvicorn
@@ -7,6 +8,12 @@ import os
 
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Define the upload directory
 UPLOAD_DIR = Path("upload")
