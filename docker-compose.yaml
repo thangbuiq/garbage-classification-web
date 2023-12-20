@@ -10,7 +10,6 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/opt/app
-      - /etc/pki/:/etc/pki
     networks:
       - proenv_network
 
@@ -19,10 +18,13 @@ services:
       context: frontend
       dockerfile: Dockerfile
     container_name: frontend
-    ports:
-      - "3000:80"
     volumes:
-      - ./frontend:/opt/app
+      - ./frontend/:/opt/app/
+    entrypoint: ["npm", "run", "start"]
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
     networks:
       - proenv_network
 

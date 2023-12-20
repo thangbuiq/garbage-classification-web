@@ -1,9 +1,10 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.responses import FileResponse
 from pathlib import Path
 import uvicorn
 import shutil
 import os
+
 
 app = FastAPI()
 
@@ -12,9 +13,11 @@ UPLOAD_DIR = Path("upload")
 
 
 @app.get("/download/{id}")
-async def get_image(id: str):
+
+async def get_image(request: Request, id: str):
     try:
-        return {"path": f"https://backend:8000/{UPLOAD_DIR}/{id}"}
+        current_ip = request.client.host
+        return {"path": f"http://{current_ip}:8000/{UPLOAD_DIR}/{id}"}
     except FileNotFoundError:
         return {"error": "Image not found"}
 
