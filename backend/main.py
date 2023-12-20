@@ -4,7 +4,6 @@ from pathlib import Path
 import uvicorn
 import shutil
 import os
-import ssl
 
 app = FastAPI()
 
@@ -15,7 +14,7 @@ UPLOAD_DIR = Path("upload")
 @app.get("/download/{id}")
 async def get_image(id: str):
     try:
-        return {"path": f"https://52.221.210.220:8000/{UPLOAD_DIR}/{id}"}
+        return {"path": f"https://backend:8000/{UPLOAD_DIR}/{id}"}
     except FileNotFoundError:
         return {"error": "Image not found"}
 
@@ -39,7 +38,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8000,
-        ssl_keyfile='/etc/pki/tls/private/localhost.key',
-        ssl_certfile='/etc/pki/tls/certs/localhost.crt',
         reload=True
     )

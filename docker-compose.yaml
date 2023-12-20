@@ -14,6 +14,18 @@ services:
     networks:
       - proenv_network
 
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/opt/app
+    networks:
+      - proenv_network
+
 networks:
   proenv_network:
     name: proenv_network

@@ -1,0 +1,8 @@
+**/docker-compose.yaml
+**/docker-compose.yml
+**/Dockerfile
+**/.gitignore
+architecture.gif
+LICENSE
+Makefile
+**/README.md
