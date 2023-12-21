@@ -18,15 +18,10 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile
-      args:
-        DockerUSER: ${DockerUSER}
-        DockerUID: ${DockerUID}
-        DockerGID: ${DockerGID}
     container_name: frontend
-    environment:
-      DockerUSER: ${DockerUSER}
+    user: root
     volumes:
-      - ./frontend/:/home/${DockerUSER}/
+      - ./frontend/:/app/
     entrypoint: ["npm", "run", "build"]
     depends_on:
       - backend
