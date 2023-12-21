@@ -5,7 +5,8 @@ ARG DockerUID=2023
 ARG DockerGID=2023
 ARG DockerPW=docker
 # Create the group and user
-RUN useradd --no-log-init --create-home --uid=${DockerUID} --gid=${DockerGID} --groups=sudo ${DockerUSER} && \
+RUN groupadd --gid=${DockerGID} ${DockerUSER} && \
+    useradd --no-log-init --create-home --uid=${DockerUID} --gid=${DockerGID} --groups=sudo ${DockerUSER} && \
     echo "${DockerUSER}:${DockerPW}" | chpasswd
 
 USER ${DockerUID}:${DockerGID}
