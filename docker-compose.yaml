@@ -20,7 +20,7 @@ services:
     user: root
     volumes:
       - ./frontend/:/app/
-    entrypoint: ["bash", "-lc", "npm install --savedev axios && npm run build"]
+    entrypoint: ["npm", "run", "build"]
     depends_on:
       - backend
 
