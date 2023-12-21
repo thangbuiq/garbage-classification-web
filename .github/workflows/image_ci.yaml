@@ -8,7 +8,7 @@ on:
         description: 'GitHub Container Registry username'
         type: string
         required: true
-      ACTIONS_DEPLOY_ACCESS_TOKEN:
+      TOKEN_GITHUB:
         description: 'GitHub Container Registry access token'
         type: string
         required: true
@@ -36,7 +36,7 @@ jobs:
 
         with:
           registry: ghcr.io
-          username: ${{ inputs.ACTIONS_DEPLOY_USER }}
+          username: ${{ secrets.ACTIONS_DEPLOY_USER }}
           password: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Build only to test

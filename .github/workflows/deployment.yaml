@@ -1,5 +1,6 @@
 name: Deployment to EC2 Instance
 run-name: DEPLOY - ${{ github.actor }} is trigger build/deploy with SHA:${{ github.sha }}
+
 on:
   pull_request:
     branches: [main]
@@ -13,18 +14,13 @@ permissions:
   pages: write
   id-token: write
 
-env:
-  ACTIONS_DEPLOY_USER: ${{ secrets.ACTIONS_DEPLOY_USER }}
-  ACTIONS_DEPLOY_ACCESS_TOKEN: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-  EC2_CONTAINER_NAME: ${{ secrets.EC2_CONTAINER_NAME }}
-
 jobs:
   image_ci:
     uses: ./.github/workflows/image_ci.yaml
     with:
-      ACTIONS_DEPLOY_USER: $ACTIONS_DEPLOY_USER
-      ACTIONS_DEPLOY_ACCESS_TOKEN: $ACTIONS_DEPLOY_ACCESS_TOKEN
-      EC2_CONTAINER_NAME: $EC2_CONTAINER_NAME
+      ACTIONS_DEPLOY_USER: ${{ secrets.ACTIONS_DEPLOY_USER }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+      EC2_CONTAINER_NAME: ${{ secrets.EC2_CONTAINER_NAME }}
   
   ec2_deploy:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
