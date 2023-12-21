@@ -22,7 +22,7 @@ services:
     user: root
     volumes:
       - ./frontend/:/opt/app/
-    entrypoint: ["sh", "-c", "npm install --unsafe-perm=true --allow-root && npm run build"]
+    entrypoint: ["npm", "run", "build"]
     depends_on:
       - backend
     networks:
