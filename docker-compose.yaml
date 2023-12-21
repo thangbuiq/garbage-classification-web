@@ -11,8 +11,6 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/opt/app
-    networks:
-      - proenv_network
 
   frontend:
     build:
@@ -25,8 +23,6 @@ services:
     entrypoint: ["npm", "run", "build"]
     depends_on:
       - backend
-    networks:
-      - proenv_network
 
   ingress:
     image: nginx:alpine
@@ -39,10 +35,4 @@ services:
     depends_on:
       - backend
       - frontend
-    networks:
-      - proenv_network
-
-networks:
-  proenv_network:
-    name: proenv_network
-    driver: bridge
+    
