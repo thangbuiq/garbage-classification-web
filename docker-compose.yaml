@@ -17,20 +17,9 @@ services:
       context: frontend
       dockerfile: Dockerfile
     container_name: frontend
-    user: root
-    depends_on:
-      - backend
-
-  ingress:
-    image: nginx:alpine
-    container_name: ingress
     restart: always
-    volumes:
-      - ./frontend/build:/usr/share/nginx/html
-      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - 8088:80
+      - "8088:80"
     depends_on:
       - backend
-      - frontend
     
