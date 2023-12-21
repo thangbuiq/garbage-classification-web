@@ -14,7 +14,7 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
     formData.append('file', image);  // Use 'file' instead of 'image'
 
     try {
-      const res = await fetch('http://backend:8000/upload', {
+      const res = await fetch('http://172.31.37.25:8000/upload', {
         method: 'POST',
         body: formData,
         headers: {
