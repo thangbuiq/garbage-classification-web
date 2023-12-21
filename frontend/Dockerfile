@@ -7,5 +7,6 @@ RUN apt-get update && \
     apt-get install -y libfontconfig1 git && \
     rm -rf /var/lib/apt/lists/*
 
+COPY package*.json .
 # Install npm packages
 RUN npm install && npm install -g react-scripts
