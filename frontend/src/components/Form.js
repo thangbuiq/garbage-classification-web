@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react'
+import axios from 'axios';
 import {useDropzone} from 'react-dropzone'
 import bgimage from '../assets/image.svg'
 
 const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setError}) => {
-    
-    
 
   const uploadImage = async (image) => {
     setError(false);
@@ -14,49 +13,39 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
     formData.append('file', image);  // Use 'file' instead of 'image'
 
     try {
-      const res = await fetch('http://127.0.0.1/api/v1/upload', {
-        method: 'POST',
-        body: formData,
+      const res = await axios.post('http://localhost/api/v1/upload', formData, {
         headers: {
           'accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
-
-      if (!res.ok) {
-        throw Error('Internal Server Error');
-      }
-
-      const data = await res.json();
-      setUrl(data.path);
-      setIsPending(false);
+    
+      // Handle the response
+      console.log(res.data);
     } catch (error) {
-      console.log(error);
-      setIsPending(false);
-      setError(true);
+      // Handle errors
+      console.error(error);
     }
   };
 
+  const onDrop = useCallback(async(acceptedFiles) => {
+    
+    let file = acceptedFiles[0]
+    let reader = new FileReader()
 
-
-
-    const onDrop = useCallback(async(acceptedFiles) => {
+    reader.readAsDataURL(file)
+    reader.onload = () => {
+      setImage(reader.result)
+      uploadImage(file)
+    }
       
-       let file = acceptedFiles[0]
-       let reader = new FileReader()
+  } , [setImage])
 
-       reader.readAsDataURL(file)
-       reader.onload = () => {
-         setImage(reader.result)
-         uploadImage(file)
-       }
-       
-    } , [setImage])
-
-    const {getRootProps , getInputProps , open} = useDropzone({onDrop , 
-                                                               maxFiles:1 , 
-                                                               accept : {'image/*' : []} ,
-                                                               noClick : true ,
-                                                               noKeyboard : true})
+  const {getRootProps , getInputProps , open} = useDropzone({onDrop , 
+                                                              maxFiles:1 , 
+                                                              accept : {'image/*' : []} ,
+                                                              noClick : true ,
+                                                              noKeyboard : true})
 
   return (
     <div className='flex flex-col h-[50vh] drop-shadow-lg p-5 justify-between bg-white w-4/5 md:w-2/6 sm:w-4/6 rounded-md'>
