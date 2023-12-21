@@ -10,14 +10,14 @@ RUN apt-get update && \
     apt-get install -y libfontconfig1 git && \
     rm -rf /var/lib/apt/lists/*
 
-# Switch back to your specified user
-USER ${DockerUID}:${DockerGID}
+# Create a directory for the application and set permissions
+RUN mkdir -p /home/${DockerUSER} && \
+    chown -R ${DockerUID}:${DockerGID} /home/${DockerUSER}
+
 WORKDIR /home/${DockerUSER}
-
-# Set ownership
-RUN chown -R ${DockerUID}:${DockerGID} /home/${DockerUSER}
-
-# Copy package.json files and install npm packages
 COPY package*.json .
+RUN chown ${DockerUID}:${DockerGID} package*.json
+
+# Install npm packages
 RUN npm install && \
     npm install -g react-scripts
