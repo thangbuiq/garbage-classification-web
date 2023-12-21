@@ -5,29 +5,34 @@ import bgimage from '../assets/image.svg'
 
 const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setError}) => {
 
-  const uploadImage = async(image) => {
-    setError(false)
-    setIsPending(true)
-    const formData = new FormData()
-    formData.append('image' , image)
-    try{
-        const res = await fetch('http://localhost:8000/upload',{
-        method : 'POST',
-        body : formData,
-        'content-type': 'multipart/form-data'
-        })
-        if(!res.ok){
-          throw Error('Internal Server Error')
-        }
-        const data = await res.json()
-        setUrl(data.path)
-        setIsPending(false)
-      } catch(error) {
-        console.log(error)
-        setIsPending(false)
-        setError(true)
+  const uploadImage = async (image) => {
+    setError(false);
+    setIsPending(true);
+  
+    const formData = new FormData();
+    formData.append('file', image);
+  
+    try {
+      const response = await axios.post('http://localhost:8000/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      if (response.status !== 200) {
+        throw Error('Internal Server Error');
       }
-  }
+  
+      const data = response.data;
+      setUrl(data.path);
+      setIsPending(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsPending(false);
+      setError(true);
+    }
+  };
+  
   const onDrop = useCallback(async(acceptedFiles) => {
     
     let file = acceptedFiles[0]
