@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y libfontconfig1 git && \
     rm -rf /var/lib/apt/lists/*
 
-COPY package.json .
-COPY package-lock.json .
+COPY . .
 # Install npm packages
-RUN npm install && npm install -g react-scripts
+RUN npm install && npm install -g react-scripts && npm install -g axios
+ENTRYPOINT ["npm", "run", "build"]

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import axios from 'axios'
+import axios from 'axios';
 import {useDropzone} from 'react-dropzone'
 import bgimage from '../assets/image.svg'
 

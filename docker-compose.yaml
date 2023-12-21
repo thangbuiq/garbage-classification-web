@@ -18,9 +18,6 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     user: root
-    volumes:
-      - ./frontend/:/app/
-    entrypoint: ["npm", "run", "build"]
     depends_on:
       - backend
 
