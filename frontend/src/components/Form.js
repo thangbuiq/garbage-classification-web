@@ -13,7 +13,7 @@ const Form = ({image , setImage , isPending , setIsPending , url , setUrl , setE
     formData.append('file', image);  // Use 'file' instead of 'image'
 
     try {
-      const res = await axios.post('http://localhost/api/v1/upload', formData, {
+      const res = await axios.post('http://172.31.37.25:8000/upload', formData, {
         headers: {
           'accept': 'application/json',
           'Content-Type': 'multipart/form-data',
