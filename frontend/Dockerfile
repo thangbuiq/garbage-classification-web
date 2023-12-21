@@ -5,7 +5,7 @@ ARG DockerUID=2023
 ARG DockerGID=2023
 ARG DockerPW=docker
 
-USER root  # Switch to root user temporarily
+USER ROOT  # Switch to root user temporarily
 
 # Update and install dependencies
 RUN apt-get update && \
