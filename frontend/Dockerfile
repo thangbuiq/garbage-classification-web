@@ -7,7 +7,7 @@ ARG DockerPW=docker
 
 USER ${DockerUID}:${DockerGID}
 WORKDIR /home/${DockerUSER}
-RUN chown -R ${DockerUSER}:${DockerUSER} /home/${DockerUSER}
+RUN chown -R ${DockerUID}:${DockerGID} /home/${DockerUSER}
 
 COPY package*.json .
 RUN \
