@@ -4,11 +4,10 @@ ARG DockerUSER=ProEnvUs
 ARG DockerUID=2023
 ARG DockerGID=2023
 ARG DockerPW=docker
-# Check if the group already exists before creating it
-RUN getent group ${DockerGID} || groupadd --gid=${DockerGID} ${DockerUSER} && \
-    useradd --no-log-init --create-home ${DockerUSER} --uid=${DockerUID} --gid=${DockerGID} && \
-    echo "${DockerUSER}:${DockerPW}" | chpasswd && \
-    usermod -aG sudo ${DockerUSER}
+# Create the group and user
+RUN groupadd --gid=${DockerGID} ${DockerUSER} && \
+    useradd --no-log-init --create-home --uid=${DockerUID} --gid=${DockerGID} --groups=sudo ${DockerUSER} && \
+    echo "${DockerUSER}:${DockerPW}" | chpasswd
 
 USER ${DockerUID}:${DockerGID}
 WORKDIR /home/${DockerUSER}
