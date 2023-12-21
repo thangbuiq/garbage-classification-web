@@ -5,12 +5,13 @@ ARG DockerUID=2023
 ARG DockerGID=2023
 ARG DockerPW=docker
 # Create the group and user
-RUN groupadd --gid=${DockerGID} ${DockerUSER} && \
-    useradd --no-log-init --create-home --uid=${DockerUID} --gid=${DockerGID} --groups=sudo ${DockerUSER} && \
+RUN useradd --no-log-init --create-home --uid=${DockerUID} --gid=${DockerGID} --groups=sudo ${DockerUSER} && \
     echo "${DockerUSER}:${DockerPW}" | chpasswd
 
 USER ${DockerUID}:${DockerGID}
 WORKDIR /home/${DockerUSER}
+RUN chown -R ${DockerUSER}:${DockerUSER} /home/${DockerUSER}
+
 COPY package*.json .
 RUN \
     apt-get update && \
