@@ -1,25 +1,12 @@
 version: '3.9'
 
 services:
-  backend:
+  app:
     build:
-      context: backend
+      context: .
       dockerfile: Dockerfile
-    restart: always
-    container_name: backend
+    container_name: app
     ports:
+      - "8888:80"
       - "8000:8000"
-    volumes:
-      - ./backend:/opt/app
-
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    container_name: frontend
     restart: always
-    ports:
-      - "8088:80"
-    depends_on:
-      - backend
-    

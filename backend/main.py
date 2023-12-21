@@ -8,12 +8,6 @@ import os
 
 
 app = FastAPI()
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_methods=["*"],
-#     allow_headers=["*"]
-# )
 
 # Define the upload directory
 UPLOAD_DIR = Path("upload")
@@ -21,10 +15,9 @@ UPLOAD_DIR = Path("upload")
 
 @app.get("/download/{id}")
 
-async def get_image(request: Request, id: str):
+async def get_image(id: str):
     try:
-        current_ip = request.client.host
-        return {"path": f"http://{current_ip}:8000/{UPLOAD_DIR}/{id}"}
+        return {"path": f"http://localhost:8000/{UPLOAD_DIR}/{id}"}
     except FileNotFoundError:
         return {"error": "Image not found"}
 
