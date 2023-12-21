@@ -3,18 +3,15 @@ run-name: BUILD - ${{ github.actor }} is trigger build/push with SHA:${{ github.
 
 on:
   workflow_call:
-    inputs:
-      ACTIONS_DEPLOY_USER:
-        description: 'GitHub Container Registry username'
-        type: string
-        required: true
+    secrets:
       TOKEN_GITHUB:
         description: 'GitHub Container Registry access token'
-        type: string
+        required: true
+      ACTIONS_DEPLOY_USER:
+        description: 'GitHub Container Registry username'
         required: true
       EC2_CONTAINER_NAME:
         description: 'EC2 Container Name'
-        type: string
         required: true
 
 permissions:
@@ -44,7 +41,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: false
-          tags: ghcr.io/${{ inputs.ACTIONS_DEPLOY_USER }}/${{ inputs.EC2_CONTAINER_NAME }}:${{ github.sha }}
+          tags: ghcr.io/${{ secrets.ACTIONS_DEPLOY_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ github.sha }}
 
       - name: Get the version
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -57,5 +54,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/${{ inputs.ACTIONS_DEPLOY_USER }}/${{ inputs.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
+          tags: ghcr.io/${{ secrets.ACTIONS_DEPLOY_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
           context: .

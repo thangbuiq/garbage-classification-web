@@ -17,10 +17,10 @@ permissions:
 jobs:
   image_ci:
     uses: ./.github/workflows/image_ci.yaml
-    with:
+    secrets:
       ACTIONS_DEPLOY_USER: ${{ secrets.ACTIONS_DEPLOY_USER }}
-      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
       EC2_CONTAINER_NAME: ${{ secrets.EC2_CONTAINER_NAME }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
   
   ec2_deploy:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
