@@ -1,0 +1,58 @@
+name: Build Image and Push to GitHub Container Registry
+run-name: BUILD - ${{ github.actor }} is trigger build/push with SHA:${{ github.sha }}
+
+on:
+  workflow_call:
+    secrets:
+      TOKEN_GITHUB:
+        description: 'GitHub Container Registry access token'
+        required: true
+      ACTIONS_DEPLOY_USER:
+        description: 'GitHub Container Registry username'
+        required: true
+      EC2_CONTAINER_NAME:
+        description: 'EC2 Container Name'
+        required: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build_image:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.ACTIONS_DEPLOY_USER }}
+          password: ${{ secrets.TOKEN_GITHUB }}
+
+      - name: Build only to test
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: docker/build-push-action@v5
+        with:
+          push: false
+          tags: ghcr.io/${{ secrets.ACTIONS_DEPLOY_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ github.sha }}
+
+      - name: Get the version
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        id: get_version
+        run: |
+          echo "IMAGE_VERSION=$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')" >> $GITHUB_OUTPUT
+
+      - name: Build and push image to GCR
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ghcr.io/${{ secrets.ACTIONS_DEPLOY_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
+          context: .

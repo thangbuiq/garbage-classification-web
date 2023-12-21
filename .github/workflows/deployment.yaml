@@ -1,0 +1,53 @@
+name: Deployment to EC2 Instance
+run-name: DEPLOY - ${{ github.actor }} is trigger build/deploy with SHA:${{ github.sha }}
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  image_ci:
+    uses: ./.github/workflows/image_ci.yaml
+    secrets:
+      ACTIONS_DEPLOY_USER: ${{ secrets.ACTIONS_DEPLOY_USER }}
+      EC2_CONTAINER_NAME: ${{ secrets.EC2_CONTAINER_NAME }}
+      TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+  
+  ec2_deploy:
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    needs: [image_ci]
+    runs-on: ubuntu-20.04
+    environment: EC2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Get the version
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        id: get_version
+        run: |
+          echo "IMAGE_VERSION=$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')" >> $GITHUB_OUTPUT
+
+      - name: Deploy to EC2 Instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            docker stop ${{ secrets.EC2_CONTAINER_NAME }} || true
+            docker rm -f ${{ secrets.EC2_CONTAINER_NAME }} || true
+            docker image prune -a --force
+            docker login ghcr.io -u ${{ secrets.ACTIONS_DEPLOY_USER }} -p ${{ secrets.TOKEN_GITHUB }}
+            docker pull ghcr.io/${{ secrets.ACTIONS_DEPLOY_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
+            docker run -d --name ${{ secrets.EC2_CONTAINER_NAME }} -p 8888:80 -p 8000:8000 --restart always ghcr.io/${{ secrets.ACTIONS_DEPLOY_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
