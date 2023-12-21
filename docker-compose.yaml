@@ -20,6 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     restart: unless-stopped
+    user: root
     volumes:
       - ./frontend/:/opt/app/
     entrypoint: ["sh", "-c", "npm install react-scripts && npm run build"]
