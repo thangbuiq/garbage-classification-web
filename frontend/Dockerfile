@@ -15,7 +15,7 @@ RUN mkdir -p /home/${DockerUSER} && \
     chown -R ${DockerUID}:${DockerGID} /home/${DockerUSER}
 
 WORKDIR /home/${DockerUSER}
-COPY package*.json .
+COPY --chown=${DockerUID}:${DockerGID}  package*.json .
 RUN chown ${DockerUID}:${DockerGID} package*.json
 
 # Install npm packages
