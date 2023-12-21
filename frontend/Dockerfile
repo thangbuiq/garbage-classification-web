@@ -5,8 +5,6 @@ ARG DockerUID=2023
 ARG DockerGID=2023
 ARG DockerPW=docker
 
-USER ROOT  # Switch to root user temporarily
-
 # Update and install dependencies
 RUN apt-get update && \
     apt-get install -y libfontconfig1 git && \
