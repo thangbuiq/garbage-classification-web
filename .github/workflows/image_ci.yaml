@@ -23,7 +23,7 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  build_image:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -33,10 +33,11 @@ jobs:
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
+
         with:
           registry: ghcr.io
           username: ${{ inputs.ACTIONS_DEPLOY_USER }}
-          password: ${{ inputs.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+          password: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Build only to test
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}

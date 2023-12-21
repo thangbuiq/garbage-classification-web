@@ -22,10 +22,10 @@ jobs:
   image_ci:
     uses: ./.github/workflows/image_ci.yaml
     with:
-      ACTIONS_DEPLOY_USER: $ACTIONS_DEPLOY_USER
-      ACTIONS_DEPLOY_ACCESS_TOKEN: $ACTIONS_DEPLOY_ACCESS_TOKEN
-      EC2_CONTAINER_NAME: $EC2_CONTAINER_NAME
-
+      ACTIONS_DEPLOY_USER: ${{ env.ACTIONS_DEPLOY_USER }}
+      ACTIONS_DEPLOY_ACCESS_TOKEN: ${{ env.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+      EC2_CONTAINER_NAME: ${{ env.EC2_CONTAINER_NAME }}
+  
   ec2_deploy:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     needs: [image_ci]
