@@ -8,6 +8,10 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      AWS_ARN:
+        required: true
+      AWS_REGION:
+        required: true
       EC2_INSTANCE_ID:
         required: true
       EC2_CONTAINER_NAME:
