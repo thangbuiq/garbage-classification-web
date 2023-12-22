@@ -3,16 +3,11 @@ FROM node:16-alpine as builder
 USER root
 WORKDIR /app
 COPY frontend/ .
-ARG PUBLIC_IP_ADDRESS=localhost
-ENV PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS}
 RUN \
-  export PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS} && \
   npm install && \
   npm install -g react-scripts && \
   npm install -g axios
-RUN \
-  export PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS} && \
-  npm run build
+RUN npm run build
 
 # STAGE 2
 FROM tiangolo/uwsgi-nginx:python3.11

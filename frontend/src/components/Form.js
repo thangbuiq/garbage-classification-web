@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { Upload } from '../assets';
 import axios from 'axios';
 
-const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError }) => {
+const Form = ({ setImage, setIsPending, setUrl, setError }) => {
   const uploadImage = async (image) => {
     setError(false);
     setIsPending(true);
@@ -55,13 +55,13 @@ const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError 
   });
 
   return (
-    <div className="flex flex-col min-h-[50vh] drop-shadow-2xl px-16 py-10 justify-between bg-white w-4/5 md:w-2/6 sm:w-4/6 rounded-3xl">
+    <div className="flex flex-col min-h-[50vh] sm:drop-shadow-2xl w-full sm:px-16 sm:py-10 justify-between bg-white mx-4 sm:mx-0 sm:w-4/6 md:w-3/5 lg:w-fit rounded-3xl">
       <p className="text-center font-semibold text-3xl mb-4 uppercase text-[#8BC541]">garbage classification</p>
       <p className="text-center font-thin text-xs text-slate-400 mb-2">File should be Jpeg , Png...</p>
       <div
         {...getRootProps({
           className:
-            'md:h-52 sm:h-44 h-auto bg-light-grey border-2 border-green-700 border-dashed rounded-2xl flex flex-col justify-center items-center',
+            'h-52 bg-light-grey border-2 border-green-700 border-dashed rounded-2xl flex flex-col justify-center items-center',
         })}
       >
         <input {...getInputProps({ name: 'image' })} />

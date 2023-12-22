@@ -7,7 +7,7 @@ import shutil
 import os
 
 PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
-orgins = [ 
+origins = [ 
     f"http://{PUBLIC_IP_ADDRESS}:8888",
     f"http://{PUBLIC_IP_ADDRESS}:8000"
 ]
@@ -15,7 +15,7 @@ orgins = [
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=orgins,
+    allow_origins=origins,
     allow_methods=["*"],
     allow_headers=["*"]
 )

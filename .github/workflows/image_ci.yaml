@@ -58,31 +58,9 @@ jobs:
         run: |
           echo "IMAGE_VERSION=$(echo $GITHUB_REF | sed -e 's/refs\/tags\///g')" >> $GITHUB_OUTPUT
 
-      - name: Configure AWS credentials from Test account
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ARN }}
-          role-session-name: ${{ github.actor }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Get public IP address using AWS CLI
-        id: get_public_ip
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          IP_ADDRESS=$(aws ec2 describe-instances --instance-ids ${{ secrets.EC2_INSTANCE_ID }} --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
-          echo "public_ip_address=$IP_ADDRESS" >> $GITHUB_OUTPUT
-
-      - name: Test public ip address
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        run: |
-          echo ${{ steps.get_public_ip.outputs.public_ip_address }}
-
       - name: Build and push image to Docker Hub
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
-          build-args: |
-            PUBLIC_IP_ADDRESS=${{ steps.get_public_ip.outputs.public_ip_address }}

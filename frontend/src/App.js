@@ -9,13 +9,27 @@ function App() {
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState(null);
   const [error, setError] = useState(false);
+
+  const handleRetry = () => {
+    setError(false);
+    setIsPending(false);
+  };
+
   return (
     <div className="w-full h-screen bg-grey flex justify-center items-center relative">
-      <img src={Logo} className='absolute top-4 left-4 w-52' />
+      <img src={Logo} className="absolute top-1 left-0 sm:top-4 sm:left-4 w-52" />
       {error ? (
-        <p className="text-red-600 text-center border-red-600 rounded-lg border-2 bg-red-300 px-4 py-2">
-          internal server error , Refresh the page and try again
-        </p>
+        <div className="flex flex-col items-center gap-5 drop-shadow-2xl bg-white px-20 py-10 rounded-2xl">
+          <p className="text-red-600 text-md rounded-2xl bg-red-200 px-9 py-3">
+            Contact the developer, the server is down :D
+          </p>
+          <button
+            onClick={handleRetry}
+            className="bg-lime-400/40 text-slate-600 font-medium rounded-xl w-auto mx-auto px-6 py-3 text-md"
+          >
+            Retry
+          </button>
+        </div>
       ) : isPending ? (
         <Pending />
       ) : image && url ? (
@@ -23,7 +37,7 @@ function App() {
       ) : (
         <Form image={image} setImage={setImage} setIsPending={setIsPending} setUrl={setUrl} setError={setError} />
       )}
-      <img src={Earth} className='absolute bottom-4 right-4 w-64' />
+      <img src={Earth} className="absolute bottom-0 right-0 w-32 sm:bottom-4 sm:right-4 sm:w-64" />
     </div>
   );
 }
