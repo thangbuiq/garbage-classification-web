@@ -13,7 +13,7 @@ const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError 
     formData.append('file', image);
 
     try {
-      const response = await axios.post(`http://${BACKEND_API}/upload`, file, {
+      const response = await axios.post(`http://${BACKEND_API}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
