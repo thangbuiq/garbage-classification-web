@@ -6,12 +6,8 @@ import { Logo, Earth } from './assets';
 
 function App() {
   const [isPending, setIsPending] = useState(false);
-  const [image, setImage] = useState(
-    'https://static.toiimg.com/thumb/msid-97774742,width-1280,height-720,resizemode-4/97774742.jpg',
-  );
-  const [url, setUrl] = useState(
-    'https://static.toiimg.com/thumb/msid-97774742,width-1280,height-720,resizemode-4/97774742.jpg',
-  );
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState(null);
   const [error, setError] = useState(false);
 
   const handleRetry = () => {
