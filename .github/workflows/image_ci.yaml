@@ -63,7 +63,7 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           script: |
             export PUBLIC_IP_ADDRESS=$(curl http://checkip.amazonaws.com)
-            echo "PUBLIC_IP_ADDRESS=$PUBLIC_IP_ADDRESS" >> $GITHUB_OUTPUT
+            echo "::set-output name=public_ip_address::$PUBLIC_IP_ADDRESS"
 
       - name: Test public ip address
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
