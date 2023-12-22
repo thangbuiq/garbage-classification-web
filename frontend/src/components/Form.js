@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { axiosFile } from '../api/axios';
+import { BACKEND_API } from '../constants';
 import { Upload } from '../assets';
+import axios from 'axios';
 
 const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError }) => {
   const uploadImage = async (image) => {
@@ -12,7 +13,11 @@ const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError 
     formData.append('file', image);
 
     try {
-      const response = await axiosFile.post('/upload', formData);
+      const response = await axios.post(`http://${BACKEND_API}/upload`, file, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (response.status !== 200) {
         throw Error('Internal Server Error');
@@ -56,7 +61,8 @@ const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError 
       <p className="text-center font-thin text-xs text-slate-400 mb-2">File should be Jpeg , Png...</p>
       <div
         {...getRootProps({
-          className: 'md:h-52 sm:h-44 h-auto bg-light-grey border-2 border-green-700 border-dashed rounded-2xl flex flex-col justify-center items-center',
+          className:
+            'md:h-52 sm:h-44 h-auto bg-light-grey border-2 border-green-700 border-dashed rounded-2xl flex flex-col justify-center items-center',
         })}
       >
         <input {...getInputProps({ name: 'image' })} />
@@ -64,7 +70,10 @@ const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError 
       </div>
       <p className="text-slate-400 md:text-md text-center mt-4 text-sm">Drag & Drop your image here</p>
       <p className="text-center font-normal text-slate-400 text-md mt-2 mb-2">Or</p>
-      <button onClick={open} className="bg-lime-400/40 text-slate-600 font-medium p-1 rounded-xl w-auto mx-auto px-4 py-2 text-md">
+      <button
+        onClick={open}
+        className="bg-lime-400/40 text-slate-600 font-medium p-1 rounded-xl w-auto mx-auto px-4 py-2 text-md"
+      >
         Choose a file
       </button>
     </div>

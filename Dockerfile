@@ -6,13 +6,18 @@ COPY frontend/ .
 ARG PUBLIC_IP_ADDRESS=localhost
 ENV PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS}
 RUN \
-    npm install && \
-    npm install -g react-scripts && \
-    npm install -g axios
-RUN npm run build
+  export PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS} && \
+  npm install && \
+  npm install -g react-scripts && \
+  npm install -g axios
+RUN \
+  export PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS} && \
+  npm run build
 
 # STAGE 2
 FROM tiangolo/uwsgi-nginx:python3.11
+ARG PUBLIC_IP_ADDRESS
+ENV PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS}
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/build /usr/share/nginx/html
 EXPOSE 80
