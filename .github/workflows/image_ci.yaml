@@ -77,4 +77,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
           build-args: |
-            PUBLIC_IP_ADDRESS=${{ steps.get_public_ip.outputs.PUBLIC_IP_ADDRESS }}
+            PUBLIC_IP_ADDRESS=${{ steps.get_public_ip.outputs.public_ip_address }}
