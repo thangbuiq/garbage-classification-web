@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { BACKEND_API } from '../constants';
 import { Upload } from '../assets';
 import axios from 'axios';
 
@@ -13,7 +12,7 @@ const Form = ({ image, setImage, isPending, setIsPending, url, setUrl, setError 
     formData.append('file', image);
 
     try {
-      const response = await axios.post(`http://${BACKEND_API}/upload`, formData, {
+      const response = await axios.post(`http://${process.env.PUBLIC_IP_ADDRESS}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
