@@ -7,9 +7,12 @@ import shutil
 import os
 
 PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
+PUBLIC_DNS_ADDRESS = os.environ.get("PUBLIC_DNS_ADDRESS")
 origins = [ 
     f"http://{PUBLIC_IP_ADDRESS}:8888",
-    f"http://{PUBLIC_IP_ADDRESS}:8000"
+    f"http://{PUBLIC_IP_ADDRESS}:8000",
+    f"http://{PUBLIC_DNS_ADDRESS}:8888",
+    f"http://{PUBLIC_DNS_ADDRESS}:8000",
 ]
 
 app = FastAPI()
