@@ -6,7 +6,8 @@ import uvicorn
 import shutil
 import os
 
-orgins = [ "http://localhost:3000", "http://localhost:8000", "http://localhost:8888" , "http://localhost:80" ]
+PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
+orgins = [ f"http://{PUBLIC_IP_ADDRESS}:8888" ]
 
 app = FastAPI()
 app.add_middleware(

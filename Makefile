@@ -11,4 +11,4 @@ build:
 	docker compose build
 
 restart:
-	make down && make up
+	make down && make upd

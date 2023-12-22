@@ -3,6 +3,8 @@ FROM node:16-alpine as builder
 USER root
 WORKDIR /app
 COPY frontend/ .
+ARG PUBLIC_IP_ADDRESS=localhost
+ENV PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS}
 RUN \
     npm install && \
     npm install -g react-scripts && \
