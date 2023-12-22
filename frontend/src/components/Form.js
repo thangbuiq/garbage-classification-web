@@ -55,8 +55,10 @@ const Form = ({ setImage, setIsPending, setUrl, setError }) => {
   });
 
   return (
-    <div className="flex flex-col min-h-[50vh] sm:drop-shadow-2xl w-full sm:px-16 sm:py-10 justify-between bg-white mx-4 sm:mx-0 sm:w-4/6 md:w-3/5 lg:w-fit rounded-3xl">
-      <p className="text-center font-semibold text-3xl mb-4 uppercase text-[#8BC541]">garbage classification</p>
+    <div className="flex flex-col min-h-[50vh] sm:drop-shadow-2xl w-full py-16 sm:px-16 sm:py-10 justify-between bg-white mx-4 sm:mx-0 sm:w-4/6 md:w-3/5 lg:w-fit rounded-3xl">
+      <p className="text-center font-semibold text-[1.675rem] sm:text-3xl mb-4 uppercase text-[#8BC541]">
+        garbage classification
+      </p>
       <p className="text-center font-thin text-xs text-slate-400 mb-2">File should be Jpeg , Png...</p>
       <div
         {...getRootProps({
@@ -65,7 +67,12 @@ const Form = ({ setImage, setIsPending, setUrl, setError }) => {
         })}
       >
         <input {...getInputProps({ name: 'image' })} />
-        <img src={Upload} className="max-w-1/3 mx-auto mt-4" draggable="false" style={{ userDrag: 'none' }} />
+        <img
+          src={Upload}
+          className="max-w-1/3 mx-auto mt-2 w-28 sm:w-24"
+          draggable="false"
+          style={{ userDrag: 'none' }}
+        />
       </div>
       <p className="text-slate-400 md:text-md text-center mt-4 text-sm">Drag & Drop your image here</p>
       <p className="text-center font-normal text-slate-400 text-md mt-2 mb-2">Or</p>

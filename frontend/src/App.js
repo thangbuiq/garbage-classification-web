@@ -6,8 +6,12 @@ import { Logo, Earth } from './assets';
 
 function App() {
   const [isPending, setIsPending] = useState(false);
-  const [image, setImage] = useState(null);
-  const [url, setUrl] = useState(null);
+  const [image, setImage] = useState(
+    'https://static.toiimg.com/thumb/msid-97774742,width-1280,height-720,resizemode-4/97774742.jpg',
+  );
+  const [url, setUrl] = useState(
+    'https://static.toiimg.com/thumb/msid-97774742,width-1280,height-720,resizemode-4/97774742.jpg',
+  );
   const [error, setError] = useState(false);
 
   const handleRetry = () => {
@@ -16,10 +20,10 @@ function App() {
   };
 
   return (
-    <div className="w-full h-screen bg-grey flex justify-center items-center relative">
-      <img src={Logo} className="absolute top-1 left-0 sm:top-4 sm:left-4 w-52" />
+    <div className="w-full h-[100vh] bg-white sm:bg-grey flex justify-center items-center">
+      <img src={Logo} className="absolute top-4 left-4 sm:top-6 sm:left-6 w-40" />
       {error ? (
-        <div className="flex flex-col items-center gap-5 drop-shadow-2xl bg-white px-20 py-10 rounded-2xl">
+        <div className="flex flex-col items-center gap-4 drop-shadow-2xl bg-white px-20 py-10 rounded-2xl">
           <p className="text-red-600 text-md rounded-2xl bg-red-200 px-9 py-3">
             Contact the developer, the server is down :D
           </p>
@@ -37,7 +41,7 @@ function App() {
       ) : (
         <Form image={image} setImage={setImage} setIsPending={setIsPending} setUrl={setUrl} setError={setError} />
       )}
-      <img src={Earth} className="absolute bottom-0 right-0 w-32 sm:bottom-4 sm:right-4 sm:w-64" />
+      <img src={Earth} className="absolute bottom-0 right-0 w-28 sm:bottom-4 sm:right-4 sm:w-64" />
     </div>
   );
 }
