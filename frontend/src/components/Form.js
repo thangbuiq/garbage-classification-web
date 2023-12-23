@@ -56,7 +56,7 @@ const Form = ({ setImage, setIsPending, setUrl, setError }) => {
 
   return (
     <div className="flex flex-col min-h-[50vh] sm:drop-shadow-2xl w-full py-16 sm:px-16 sm:py-10 justify-between bg-white mx-4 sm:mx-0 sm:w-4/6 md:w-3/5 lg:w-fit rounded-3xl">
-      <p className="text-center font-semibold text-[1.675rem] sm:text-3xl mb-4 uppercase text-[#8BC541]">
+      <p className="text-center font-semibold text-[1.375rem] sm:text-3xl mt-4 sm:mt-0 mb-4 uppercase text-[#8BC541]">
         garbage classification
       </p>
       <p className="text-center font-thin text-xs text-slate-400 mb-2">File should be Jpeg , Png...</p>
@@ -74,8 +74,8 @@ const Form = ({ setImage, setIsPending, setUrl, setError }) => {
           style={{ userDrag: 'none' }}
         />
       </div>
-      <p className="text-slate-400 md:text-md text-center mt-4 text-sm">Drag & Drop your image here</p>
-      <p className="text-center font-normal text-slate-400 text-md mt-2 mb-2">Or</p>
+      <p className="text-center font-thin text-xs text-slate-400 mt-4 mb-2">Drag & Drop your image here</p>
+      <p className="text-center font-thin text-xs text-slate-400 mb-2">Or</p>
       <button
         onClick={open}
         className="bg-lime-400/40 text-slate-600 font-medium p-1 rounded-xl w-auto mx-auto px-4 py-2 text-md"

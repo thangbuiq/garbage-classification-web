@@ -6,8 +6,12 @@ import { Logo, Earth } from './assets';
 
 function App() {
   const [isPending, setIsPending] = useState(false);
-  const [image, setImage] = useState(null);
-  const [url, setUrl] = useState(null);
+  const [image, setImage] = useState(
+    'https://media.istockphoto.com/id/1319467946/photo/young-black-and-white-cow-heifer-in-a-meadow-looking-in-the-camera.jpg?s=612x612&w=0&k=20&c=Z1maGtrEMrbAEVw6ZTJwyvq2_rkolky9LJX34mSZ6Kg=',
+  );
+  const [url, setUrl] = useState(
+    'https://media.istockphoto.com/id/1319467946/photo/young-black-and-white-cow-heifer-in-a-meadow-looking-in-the-camera.jpg?s=612x612&w=0&k=20&c=Z1maGtrEMrbAEVw6ZTJwyvq2_rkolky9LJX34mSZ6Kg=',
+  );
   const [error, setError] = useState(false);
 
   const handleRetry = () => {
