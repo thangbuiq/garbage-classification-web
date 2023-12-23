@@ -13,6 +13,8 @@ origins = [
     f"http://{PUBLIC_IP_ADDRESS}:8000",
     f"http://{PUBLIC_DNS_ADDRESS}:8888",
     f"http://{PUBLIC_DNS_ADDRESS}:8000",
+    "http://localhost:8888",
+    "http://localhost:8000"
 ]
 
 app = FastAPI()
