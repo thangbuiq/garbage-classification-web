@@ -6,7 +6,7 @@ on:
     branches: [main]
   push:
     tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+      - '[0-9]+.[0-9]+.[0-9]+'
 
 permissions:
   contents: write
@@ -27,7 +27,7 @@ jobs:
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
       EC2_KEY: ${{ secrets.EC2_KEY }}
       EC2_PORT: ${{ secrets.EC2_PORT }}
-      
+
   ec2_deploy:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     needs: [image_ci]
@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Get the version
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         id: get_version
@@ -56,4 +56,5 @@ jobs:
             docker image prune -a --force
             docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             docker pull ${{ secrets.DOCKERHUB_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
-            docker run -d --name ${{ secrets.EC2_CONTAINER_NAME }} -p 8888:80 -p 8000:8000 --restart always ${{ secrets.DOCKERHUB_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
+            export PUBLIC_DNS_ADDRESS=$(ec2-metadata -p | grep -oP '(?<=public-hostname: ).*')
+            docker run -d --name ${{ secrets.EC2_CONTAINER_NAME }} -e PUBLIC_DNS_ADDRESS=$PUBLIC_DNS_ADDRESS -p 8888:80 -p 8000:8000 --restart always ${{ secrets.DOCKERHUB_USER }}/${{ secrets.EC2_CONTAINER_NAME }}:${{ steps.get_version.outputs.IMAGE_VERSION }}
