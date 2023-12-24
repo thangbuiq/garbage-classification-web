@@ -9,6 +9,7 @@ import shutil
 import os
 import openai
 from dotenv import load_dotenv
+
 load_dotenv()
 openai.api_key = os.getenv("API_KEY")
 
@@ -98,7 +99,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
         "predicted_value": predicted_value,
         "predicted_accuracy": predicted_accuracy
     }
-
+@app.post("/get-advice")
 async def give_advice(Trash: trash ):
     advice = input_trash(f"Garbage name: {Trash.type_trash}")
     return {"Advice": advice}
