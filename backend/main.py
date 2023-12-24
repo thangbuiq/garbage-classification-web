@@ -15,8 +15,9 @@ origins = [
     f"http://{PUBLIC_IP_ADDRESS}:8000",
     f"http://{PUBLIC_DNS_ADDRESS}:8888",
     f"http://{PUBLIC_DNS_ADDRESS}:8000",
-    "http://localhost:8888",
-    "http://localhost:8000"
+    "http://localhost:8888", # For debugging
+    "http://localhost:8000", # For debugging
+    "http://localhost:3000", # For debugging
 ]
 
 app = FastAPI(
@@ -73,6 +74,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
     predicted_value, predicted_accuracy = await predict(upload_path)
 
     return {
+        "path": upload_path,
         "predicted_value": predicted_value,
         "predicted_accuracy": predicted_accuracy
     }

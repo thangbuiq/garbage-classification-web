@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 model = load_model('models/model.h5')
-output_class = ["cardboard", "glass", "metal","paper", "plastic", "trash"]
+output_class = ["battery", "glass", "metal","organic", "paper", "plastic"]
     
 async def predict(new_image_path):
     try:

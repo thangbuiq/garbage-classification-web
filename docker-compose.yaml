@@ -7,6 +7,5 @@ services:
       dockerfile: Dockerfile
     container_name: app
     ports:
-      - "8888:80"
-      - "8000:8000"
-    restart: always
+      - '8888:80'
+      - '8000:8000'

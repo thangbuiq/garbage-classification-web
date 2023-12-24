@@ -6,12 +6,9 @@ import { Logo, Earth } from './assets';
 
 function App() {
   const [isPending, setIsPending] = useState(false);
-  const [image, setImage] = useState(
-    'https://media.istockphoto.com/id/1319467946/photo/young-black-and-white-cow-heifer-in-a-meadow-looking-in-the-camera.jpg?s=612x612&w=0&k=20&c=Z1maGtrEMrbAEVw6ZTJwyvq2_rkolky9LJX34mSZ6Kg=',
-  );
-  const [url, setUrl] = useState(
-    'https://media.istockphoto.com/id/1319467946/photo/young-black-and-white-cow-heifer-in-a-meadow-looking-in-the-camera.jpg?s=612x612&w=0&k=20&c=Z1maGtrEMrbAEVw6ZTJwyvq2_rkolky9LJX34mSZ6Kg=',
-  );
+  const [predict, setPredict] = useState(null);
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState(null);
   const [error, setError] = useState(false);
 
   const handleRetry = () => {
@@ -36,10 +33,19 @@ function App() {
         </div>
       ) : isPending ? (
         <Pending />
-      ) : image && url ? (
-        <Uploaded image={image} url={url} />
+      ) : image ? (
+        <Uploaded image={image} predict={predict} />
       ) : (
-        <Form image={image} setImage={setImage} setIsPending={setIsPending} setUrl={setUrl} setError={setError} />
+        <Form
+          image={image}
+          url={url}
+          predict={predict}
+          setImage={setImage}
+          setIsPending={setIsPending}
+          setUrl={setUrl}
+          setError={setError}
+          setPredict={setPredict}
+        />
       )}
       <img src={Earth} className="absolute bottom-0 right-0 w-28 sm:bottom-4 sm:right-4 sm:w-64" />
     </div>

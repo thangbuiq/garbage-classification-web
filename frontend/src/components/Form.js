@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { Upload } from '../assets';
 import axios from 'axios';
 
-const Form = ({ setImage, setIsPending, setUrl, setError }) => {
+const Form = ({ setImage, setIsPending, setUrl, setError, setPredict }) => {
   const uploadImage = async (image) => {
     setError(false);
     setIsPending(true);
@@ -12,7 +12,7 @@ const Form = ({ setImage, setIsPending, setUrl, setError }) => {
     formData.append('file', image);
 
     try {
-      const response = await axios.post(`http://PUBLIC_IP_ADDRESS/upload`, formData, {
+      const response = await axios.post(`http://PUBLIC_IP_ADDRESS:8000/predict`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -24,6 +24,7 @@ const Form = ({ setImage, setIsPending, setUrl, setError }) => {
 
       const data = response.data;
       setUrl(data.path);
+      setPredict(data.predicted_value);
       setIsPending(false);
     } catch (error) {
       console.error('Error:', error);
