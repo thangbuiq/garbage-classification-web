@@ -2,12 +2,15 @@ import { useState } from 'react';
 import Form from './components/Form';
 import Pending from './components/Pending';
 import Uploaded from './components/Uploaded';
-import { Logo, Earth } from './assets';
+import { Logo, Earth, glass, metal, paper, plastic, organic, battery } from './assets';
 
 function App() {
   const [isPending, setIsPending] = useState(false);
   const [predict, setPredict] = useState(null);
+  const [advice, setAdvice] = useState(null);
   const [image, setImage] = useState(null);
+  const [color, setColor] = useState(null);
+  const [TrashBinImage, setTrashBinImage] = useState(null);
   const [url, setUrl] = useState(null);
   const [error, setError] = useState(false);
 
@@ -26,7 +29,7 @@ function App() {
           </p>
           <button
             onClick={handleRetry}
-            className="bg-lime-400/40 text-slate-600 font-medium rounded-xl w-auto mx-auto px-6 py-3 text-md"
+            className="bg-lime-400/40 text-slate-600 font-medium rounded-xl w-auto mx-auto px-6 py-3 text-md hover:bg-lime-600/75 hover:text-white transition-all duration-300"
           >
             Retry
           </button>
@@ -34,17 +37,23 @@ function App() {
       ) : isPending ? (
         <Pending />
       ) : image ? (
-        <Uploaded image={image} predict={predict} />
+        <Uploaded image={image} predict={predict} advice={advice} color={color} TrashBinImage={TrashBinImage} />
       ) : (
         <Form
           image={image}
           url={url}
           predict={predict}
+          advice={advice}
+          color={color}
+          TrashBinImage={TrashBinImage}
           setImage={setImage}
           setIsPending={setIsPending}
           setUrl={setUrl}
+          setColor={setColor}
           setError={setError}
+          setAdvice={setAdvice}
           setPredict={setPredict}
+          setTrashBinImage={setTrashBinImage}
         />
       )}
       <img src={Earth} className="absolute bottom-0 right-0 w-28 sm:bottom-4 sm:right-4 sm:w-64" />

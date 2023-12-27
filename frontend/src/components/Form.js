@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload } from '../assets';
+import { Upload, glass, metal, paper, plastic, organic, battery } from '../assets';
 import axios from 'axios';
 
-const Form = ({ setImage, setIsPending, setUrl, setError, setPredict }) => {
+const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, setAdvice, setTrashBinImage }) => {
   const uploadImage = async (image) => {
     setError(false);
     setIsPending(true);
@@ -23,8 +23,55 @@ const Form = ({ setImage, setIsPending, setUrl, setError, setPredict }) => {
       }
 
       const data = response.data;
+
       setUrl(data.path);
+      const adviceResponse = await fetch('http://PUBLIC_IP_ADDRESS:8000/get-advice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ type_trash: data.predicted_value }),
+      });
+
+      if (!adviceResponse.ok) {
+        throw Error('Failed to fetch advice');
+      }
+
+      const adviceData = await adviceResponse.json();
+      console.log('Advice:', adviceData.advice);
+      console.log('Time:', adviceData.time);
+
       setPredict(data.predicted_value);
+      setAdvice(adviceData.advice);
+      switch (data.predicted_value) {
+        case 'glass':
+          setTrashBinImage(glass);
+          setColor('glass');
+          break;
+        case 'metal':
+          setTrashBinImage(metal);
+          setColor('metal');
+          break;
+        case 'paper':
+          setTrashBinImage(paper);
+          setColor('paper');
+          break;
+        case 'plastic':
+          setTrashBinImage(plastic);
+          setColor('plastic');
+          break;
+        case 'organic':
+          setTrashBinImage(organic);
+          setColor('organic');
+          break;
+        case 'battery':
+          setTrashBinImage(battery);
+          setColor('battery');
+          break;
+        default:
+          setTrashBinImage(null);
+          break;
+      }
       setIsPending(false);
     } catch (error) {
       console.error('Error:', error);
@@ -72,14 +119,14 @@ const Form = ({ setImage, setIsPending, setUrl, setError, setPredict }) => {
           src={Upload}
           className="max-w-1/3 mx-auto mt-2 w-28 sm:w-24"
           draggable="false"
-          style={{ userDrag: 'none' }}
+          style={{ userDrag: 'none', filter: 'contrast(85%)' }}
         />
       </div>
       <p className="text-center font-thin text-xs text-slate-400 mt-4 mb-2">Drag & Drop your image here</p>
       <p className="text-center font-thin text-xs text-slate-400 mb-2">Or</p>
       <button
         onClick={open}
-        className="bg-lime-400/40 text-slate-600 font-medium p-1 rounded-xl w-auto mx-auto px-4 py-2 text-md"
+        className="bg-lime-400/40 text-slate-600 font-medium p-1 rounded-xl w-auto mx-auto px-4 py-2 text-md hover:bg-lime-600/75 hover:text-white transition-all duration-300"
       >
         Choose a file
       </button>

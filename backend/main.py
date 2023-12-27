@@ -4,14 +4,13 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from pathlib import Path
 from utils import model, predict
+import time
 import uvicorn
 import shutil
 import os
-import openai
-from dotenv import load_dotenv
+from openai import OpenAI
 
-load_dotenv()
-openai.api_key = os.getenv("API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
 PUBLIC_DNS_ADDRESS = os.environ.get("PUBLIC_DNS_ADDRESS")
@@ -30,14 +29,13 @@ class trash(BaseModel):
 
 def input_trash(input):
     messages = [
-    {"role": "system", "content":"Act as an environmental advocate, your task offers a brief simple and friendly tip on handling garbage."}
+        {"role": "system", "content": "Act as an environmental advocate with a focus on providing clear and concise information in a few sentences."},
+        {"role": "system", "content": "Your task is to give me the most essential information about the garbage in just 2 lines, focusing on its decomposition, handling, and disposal. Avoid unnecessary details or explanations."},
     ]
     messages.append(
         {"role": "user", "content": f"{input}"},
-)
-    chat = openai.ChatCompletion.create(
-        model = 'gpt-3.5-turbo', messages=messages
     )
+    chat = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
     reply = chat.choices[0].message.content
     return reply
 
@@ -101,8 +99,12 @@ async def predict_endpoint(file: UploadFile = File(...)):
     }
 @app.post("/get-advice")
 async def give_advice(Trash: trash ):
+    start_time = time.time()
     advice = input_trash(f"Garbage name: {Trash.type_trash}")
-    return {"Advice": advice}
+    return {
+        "advice": advice,
+        "time": time.time() - start_time
+    }
 
 if __name__ == "__main__":
     uvicorn.run(
