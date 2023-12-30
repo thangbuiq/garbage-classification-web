@@ -29,8 +29,8 @@ class trash(BaseModel):
 
 def input_trash(input):
     messages = [
-        {"role": "system", "content": "Act as an environmental advocate with a focus on providing clear and concise information in a few sentences."},
-        {"role": "system", "content": "Your task is to give me the most essential information about the garbage in just 2 lines, focusing on its decomposition, handling, and disposal. Avoid unnecessary details or explanations."},
+        {"role": "system", "content": "Hành động như một người ủng hộ môi trường với sự tập trung vào cung cấp thông tin rõ ràng và ngắn gọn trong vài câu."},
+        {"role": "system", "content": "Nhiệm vụ của bạn là cung cấp cho tôi thông tin cần thiết nhất về rác trong chỉ 2 dòng, tập trung vào quá trình phân hủy, xử lý và xử lý. Tránh chi tiết hoặc giải thích không cần thiết."},
     ]
     messages.append(
         {"role": "user", "content": f"{input}"},
@@ -100,7 +100,7 @@ async def predict_endpoint(file: UploadFile = File(...)):
 @app.post("/get-advice")
 async def give_advice(Trash: trash ):
     start_time = time.time()
-    advice = input_trash(f"Garbage name: {Trash.type_trash}")
+    advice = input_trash(f"Loại rác: {Trash.type_trash}")
     return {
         "advice": advice,
         "time": time.time() - start_time

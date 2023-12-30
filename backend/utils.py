@@ -1,5 +1,6 @@
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from rembg import remove
 import numpy as np
 from PIL import Image
 
@@ -8,7 +9,10 @@ output_class = ["battery", "glass", "metal","organic", "paper", "plastic"]
     
 async def predict(new_image_path):
     try:
-        test_image = image.load_img(new_image_path, target_size=(224, 224))
+        test_image = Image.open(new_image_path)
+        test_image = test_image.resize((224, 224)).convert("RGB")
+        test_image = remove(test_image)
+        test_image = test_image.convert("RGB")  # Convert to RGB format
         test_image = image.img_to_array(test_image) / 255
         test_image = np.expand_dims(test_image, axis=0)
 
