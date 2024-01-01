@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, glass, metal, paper, plastic, organic, battery } from '../assets';
 import axios from 'axios';
@@ -93,7 +93,18 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
     },
     [setImage],
   );
-
+  const handlePaste = (event) => {
+    const items = event.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const blob = item.getAsFile();
+        console.log('Pasted file:', blob);
+        setImage(URL.createObjectURL(blob));
+        uploadImage(blob);
+      }
+    }
+  };
   const { getRootProps, getInputProps, open } = useDropzone({
     onDrop,
     maxFiles: 1,
@@ -101,7 +112,12 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
     noClick: true,
     noKeyboard: true,
   });
-
+  useEffect(() => {
+    document.addEventListener('paste', handlePaste);
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
+  }, []);
   return (
     <div className="flex flex-col min-h-[50vh] sm:drop-shadow-2xl w-full py-16 sm:px-16 sm:py-10 justify-between bg-white mx-4 sm:mx-0 sm:w-4/6 md:w-3/5 lg:w-fit rounded-3xl">
       <p className="text-center font-semibold text-[1.375rem] sm:text-3xl mt-4 sm:mt-0 mb-4 uppercase text-[#8BC541]">
