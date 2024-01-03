@@ -3,14 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from pathlib import Path
-from utils import model, predict
+from utils import predict, input_trash
 import time
 import uvicorn
 import shutil
 import os
-from openai import OpenAI
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
 PUBLIC_DNS_ADDRESS = os.environ.get("PUBLIC_DNS_ADDRESS")
@@ -24,20 +21,6 @@ origins = [
     "http://localhost:3000", # For debugging
 ]
 
-class trash(BaseModel):
-    type_trash:  str
-
-def input_trash(input):
-    messages = [
-        {"role": "system", "content": "Hành động như một người ủng hộ môi trường với sự tập trung vào cung cấp thông tin rõ ràng và ngắn gọn trong vài câu."},
-        {"role": "system", "content": "Nhiệm vụ của bạn là cung cấp cho tôi thông tin cần thiết nhất về rác trong chỉ 2 dòng, tập trung vào quá trình phân hủy, xử lý và xử lý. Tránh chi tiết hoặc giải thích không cần thiết."},
-    ]
-    messages.append(
-        {"role": "user", "content": f"{input}"},
-    )
-    chat = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
-    reply = chat.choices[0].message.content
-    return reply
 
 app = FastAPI(
     title="🗑️ Garbage Classification",
@@ -55,6 +38,9 @@ app.add_middleware(
 UPLOAD_DIR = Path("upload")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
+class trash(BaseModel):
+    type_trash:  str
+    
 @app.get("/download/{id}")
 async def get_image(id: str):
     try:
