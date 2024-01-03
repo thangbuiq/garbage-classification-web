@@ -1,6 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, glass, metal, paper, plastic, organic, battery } from '../assets';
+import { Upload, glass, metal, paper, plastic, organic, battery, camera } from '../assets';
+import Camera from 'react-html5-camera-photo';
 import axios from 'axios';
 
 const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, setAdvice, setTrashBinImage }) => {
@@ -80,6 +81,25 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
     }
   };
 
+  const [dataUri, setDataUri] = useState('');
+  function handleTakePhoto(dataUri) {
+    console.log('takePhoto');
+    setDataUri(dataUri);
+    let byteString = atob(dataUri.split(',')[1]);
+
+    // separate out the mime component
+    let mimeString = dataUri.split(',')[0].split(':')[1].split(';')[0];
+
+    let ab = new ArrayBuffer(byteString.length);
+    let ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    let blob = new Blob([ab], { type: mimeString });
+    setImage(URL.createObjectURL(blob));
+    uploadImage(blob);
+  }
+
   const onDrop = useCallback(
     async (acceptedFiles) => {
       let file = acceptedFiles[0];
@@ -112,6 +132,10 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
     noClick: true,
     noKeyboard: true,
   });
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const toggleCamera = () => {
+    setIsCameraActive((prevState) => !prevState);
+  };
   useEffect(() => {
     document.addEventListener('paste', handlePaste);
     return () => {
@@ -146,6 +170,24 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
       >
         Choose a file
       </button>
+      <button
+        onClick={toggleCamera}
+        className="bg-lime-400/40 text-slate-600 font-medium p-1 mt-4 mb-2 rounded-full w-auto mx-auto px-4 py-2 text-md hover:bg-lime-600/75 hover:text-white transition-all duration-300"
+      >
+        <img src={camera} className="w-6" />
+      </button>
+      {isCameraActive && (
+        <Camera
+          onTakePhoto={(dataUri) => {
+            handleTakePhoto(dataUri);
+          }}
+          isFullscreen={false}
+          isImageMirror={true}
+          idealResolution={{ width: 512, height: 384 }}
+          isMaxResolution={false}
+          sizeFactor={1}
+        />
+      )}
     </div>
   );
 };

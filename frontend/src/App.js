@@ -4,7 +4,7 @@ import Pending from './components/Pending';
 import Uploaded from './components/Uploaded';
 import { Logo, Earth, glass, metal, paper, plastic, organic, battery } from './assets';
 
-function App() {
+function App(props) {
   const [isPending, setIsPending] = useState(false);
   const [predict, setPredict] = useState(null);
   const [advice, setAdvice] = useState(null);

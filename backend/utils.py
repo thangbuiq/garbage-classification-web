@@ -31,8 +31,7 @@ async def predict(new_image_path):
 
 def input_trash(input):
     messages = [
-        {"role": "system", "content": "Hành động như nhà tuyên truyền bảo vệ môi trường với sự tập trung vào cung cấp thông tin rõ ràng và ngắn gọn trong vài câu."},
-        {"role": "system", "content": "Nhiệm vụ của bạn là cung cấp cho tôi thông tin cần thiết nhất về loại rác mà tôi đưa ra trong một list chỉ 3 dòng, tập trung vào quá trình phân hủy, cách xử lý loại rác này. Tránh chi tiết hoặc giải thích không cần thiết."},
+        {"role": "system", "content": "Bạn là một nhà tuyên truyền bảo vệ môi trường. Nhiệm vụ của bạn là cung cấp cho tôi thông tin cần thiết nhất về loại rác mà tôi đưa ra trong một list chỉ 2 dòng (đổi tên loại rác sang tiếng Việt trước khi trả lời), tập trung vào quá trình phân hủy và cách xử lý loại rác này. Tránh chi tiết hoặc giải thích không cần thiết."},
     ]
     messages.append(
         {"role": "user", "content": f"{input}"},
