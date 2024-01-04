@@ -16920,7 +16920,7 @@ Size (MB) of model ResNet152: 231.06 MB
 <h3 id="Deployment-On-Amazon-Elastic-Compute-Cloud-(AWS-EC2)-with-Github-Actions-"><strong>Deployment On Amazon Elastic Compute Cloud (AWS EC2) with Github Actions</strong> <a class="anchor" id="chapter6" /><a class="anchor-link" href="#Deployment-On-Amazon-Elastic-Compute-Cloud-(AWS-EC2)-with-Github-Actions-">&#182;</a></h3><p>Để làm một ví dụ minh họa cho API (call và sử dụng API mà chúng em đã implement), chúng em viết một app React đơn giản gồm các chức năng chính như: upload ảnh, mở camera chụp ảnh, drag and drop ảnh và paste ảnh,... -&gt; Tất cả những thao tác này sẽ gửi ảnh vào trong một <strong>formData</strong> đến lần lượt là route <strong>/predict</strong>, và sau đó là <strong>/get-advice</strong> ở API host trên cùng một nơi với app frontend (port 8000).</p>
 <p>Bây giờ, ta nhìn qua lại kiến trúc software được sử dụng để deploy:</p>
 <center>
-<img src="https://github.com/thangbuiq/simple_mlops/blob/main/architect.gif?raw=true" width="1000"/>
+    <img src="https://github.com/thangbuiq/simple_mlops/blob/main/architect.gif?raw=true" width="800"/>
 </center><p>Để một app chạy thành công trên server, trước tiên ta phải chạy nó thành công ở máy local. Để giảm tải việc setup quá nhiều thứ trên server, ta sẽ <strong>containerize</strong> toàn bộ app của chúng ta lại thành một docker image có tên <strong><code>proenv_app</code></strong> (kích thước image là <strong>1.49GB</strong>). Cuối cùng khi deploy, ta chỉ cần lên server và cài mỗi <strong>Docker</strong>.</p>
 <p><img src="https://i.imgur.com/pah24CP.png" alt=""></p>
 <p>Trước tiên, ta cần tạo một máy EC2 trên AWS. Tụi em sử dụng chính account cá nhân của mình và bắt đầu lựa chọn instance với chi phí phù hợp.</p>
