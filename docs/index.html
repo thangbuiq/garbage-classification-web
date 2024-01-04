@@ -16928,7 +16928,7 @@ Size (MB) of model ResNet152: 231.06 MB
 <blockquote><p>Ở đây, nhóm đã thử qua các instance type có free-tier lần lượt là "t2.nano", "t2.micro", "t3.micro" và nhận thấy được hiệu năng của hai cấu hình máy này không thể đáp ứng nổi việc host hay deploy một model Keras. Do đó nhóm đã chọn một lựa chọn có phần tốn kém hơn chút là <strong>"t3.small"</strong>. (với instance image sử dụng là Amazon Linux)</p>
 </blockquote>
 <p><img src="https://d2908q01vomqb2.cloudfront.net/da4b9237bacccdf19c0760cab7aec4a8359010b0/2018/08/23/T3_2.png" alt=""></p>
-<p>Nếu ta chạy liên tục máy <strong>Linux t3.small</strong> trong 1 tháng thì chi phí rơi vào khoảng <strong>0.0209<em>24</em>30 = 15.04 $ = 362.000 VNĐ</strong></p>
+<p>Nếu ta chạy liên tục máy <strong>Linux t3.small</strong> trong 1 tháng thì chi phí rơi vào khoảng <strong>0.0209 x 24 x 30 = 15.04 $ = 362.000 VNĐ</strong></p>
 <blockquote><p>Do nhóm chỉ mở vào những lúc cần thiết khi debug nên chi phí chỉ khoảng vài chục nghìn đồng</p>
 </blockquote>
 <p>Cuối cùng ta set inbound rules lần lượt cho security group attach vào EC2 đã tạo với các port như sau:</p>
