@@ -13,7 +13,7 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
     formData.append('file', image);
 
     try {
-      const response = await axios.post(`http://PUBLIC_IP_ADDRESS:8000/predict`, formData, {
+      const response = await axios.post(`https://garbage-classification-web.onrender.com/predict`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -26,7 +26,7 @@ const Form = ({ setImage, setIsPending, setUrl, setColor, setError, setPredict, 
       const data = response.data;
 
       setUrl(data.path);
-      const adviceResponse = await fetch('http://PUBLIC_IP_ADDRESS:8000/get-advice', {
+      const adviceResponse = await fetch('https://garbage-classification-web.onrender.com/get-advice', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
