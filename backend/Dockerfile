@@ -4,7 +4,7 @@
 # This Dockerfile is only for debug purpose
 ###################################################
 
-FROM python:3.10.12-alpine3.17
+FROM python:3.11-alpine
 WORKDIR /opt/app
 COPY . .
 RUN apk add --update alpine-sdk
