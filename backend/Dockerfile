@@ -10,7 +10,6 @@ COPY . .
 RUN apt-get update -qq && apt-get install -y build-essential
 RUN \
   pip install --upgrade pip
-RUN pip install tensorflow
 RUN pip install -r requirements.txt
 EXPOSE 8000
 ENTRYPOINT [ "python3", "main.py" ]
