@@ -7,6 +7,7 @@
 FROM python:3.10.12-alpine3.17
 WORKDIR /opt/app
 COPY . .
+RUN apk add --update alpine-sdk
 RUN \
   pip install --upgrade pip \
   && pip install -r requirements.txt
