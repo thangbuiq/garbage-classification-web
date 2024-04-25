@@ -10,6 +10,7 @@ COPY . .
 RUN apk add --update alpine-sdk
 RUN \
   pip install --upgrade pip
+RUN pip install tensorflow
 RUN pip install -r requirements.txt
 EXPOSE 8000
 ENTRYPOINT [ "python3", "main.py" ]
