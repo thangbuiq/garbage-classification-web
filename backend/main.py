@@ -9,17 +9,17 @@ import uvicorn
 import shutil
 import os
 
-PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
-PUBLIC_DNS_ADDRESS = os.environ.get("PUBLIC_DNS_ADDRESS")
-origins = [ 
-    f"http://{PUBLIC_IP_ADDRESS}:8888",
-    f"http://{PUBLIC_IP_ADDRESS}:8000",
-    f"http://{PUBLIC_DNS_ADDRESS}:8888",
-    f"http://{PUBLIC_DNS_ADDRESS}:8000",
-    "http://localhost:8888", # For debugging
-    "http://localhost:8000", # For debugging
-    "http://localhost:3000", # For debugging
-]
+# PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
+# PUBLIC_DNS_ADDRESS = os.environ.get("PUBLIC_DNS_ADDRESS")
+# origins = [ 
+#     f"http://{PUBLIC_IP_ADDRESS}:8888",
+#     f"http://{PUBLIC_IP_ADDRESS}:8000",
+#     f"http://{PUBLIC_DNS_ADDRESS}:8888",
+#     f"http://{PUBLIC_DNS_ADDRESS}:8000",
+#     "http://localhost:8888", # For debugging
+#     "http://localhost:8000", # For debugging
+#     "http://localhost:3000", # For debugging
+# ]
 
 
 app = FastAPI(
@@ -27,12 +27,12 @@ app = FastAPI(
     summary= "This is an API that helps users classify waste and learn how to handle it"
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_methods=["*"],
+#     allow_headers=["*"]
+# )
 
 # Define the upload directory
 UPLOAD_DIR = Path("upload")
