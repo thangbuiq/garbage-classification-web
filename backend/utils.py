@@ -4,8 +4,9 @@ from keras.applications.resnet50 import preprocess_input
 import numpy as np
 import os
 from openai import OpenAI
+from groq import Groq
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = Groq(api_key=os.getenv("OPENAI_API_KEY"))
 model = load_model('models/model.h5')
 output_class = ["battery", "glass", "metal","organic", "paper", "plastic"]
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -36,6 +37,6 @@ def input_trash(input):
     messages.append(
         {"role": "user", "content": f"{input}"},
     )
-    chat = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
+    chat = client.chat.completions.create(model="llama3-8b-8192", messages=messages)
     reply = chat.choices[0].message.content
     return reply
