@@ -4,10 +4,10 @@
 # This Dockerfile is only for debug purpose
 ###################################################
 
-FROM python:3.11-alpine
+FROM python:3.11-slim
 WORKDIR /opt/app
 COPY . .
-RUN apk add --update alpine-sdk
+RUN apt-get update -qq && apt-get install -y build-essential
 RUN \
   pip install --upgrade pip
 RUN pip install tensorflow
