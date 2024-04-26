@@ -9,6 +9,7 @@ import datetime
 import uvicorn
 import shutil
 import os
+import pytz
 
 origins = [ 
     "https://garbage-classification-web.vercel.app"
@@ -28,6 +29,14 @@ app.add_middleware(
 
 class trash(BaseModel):
     type_trash:  str
+
+@app.get("/")
+async def live():
+
+    return {
+        "message": "Your service is live 🎉",
+        "time": datetime.datetime.now(pytz.timezone("Asia/Ho_Chi_Minh")).strftime("%Y-%m-%d %H:%M:%S")
+    }
 
 @app.post("/predict-resnet")
 async def predict_endpoint(file: UploadFile = File(...)):

@@ -57,6 +57,7 @@ async def zeroshot(new_image_path):
         
     except Exception as e:
         print(f"Error processing image: {str(e)}")
+        return "unknown", 0
 
 
 def input_trash(input):
