@@ -1,0 +1,13 @@
+name: Keepalive
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send keepalive request
+        run: curl https://garbage-classification-web.onrender.com
