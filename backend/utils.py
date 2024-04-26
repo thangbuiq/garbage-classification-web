@@ -1,13 +1,16 @@
-from keras.models import load_model
-from keras.preprocessing import image
-from keras.applications.resnet50 import preprocess_input
+# from keras.models import load_model
+# from keras.preprocessing import image
+# from keras.applications.resnet50 import preprocess_input
 import numpy as np
 import os
+import requests
 from openai import OpenAI
 from groq import Groq
+import base64
 
 client = Groq(api_key=os.getenv("OPENAI_API_KEY"))
-model = load_model('models/model.h5')
+HF_API = os.getenv("HF_API")
+# model = load_model('models/model.h5')
 output_class = ["battery", "glass", "metal","organic", "paper", "plastic"]
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
@@ -28,7 +31,33 @@ async def predict(new_image_path):
         return predicted_value, predicted_accuracy
     except Exception as e:
         return f"Error processing image: {str(e)}", 0
-    
+
+async def predict_zeroshot(new_image_path):
+    try:
+        API_URL = "https://api-inference.huggingface.co/models/openai/clip-vit-large-patch14-336"
+        headers = {"Authorization": f"Bearer {HF_API}"}
+
+        def query(data):
+            with open(data["image_path"], "rb") as f:
+                img = f.read()
+            payload={
+                "parameters": data["parameters"],
+                "inputs": base64.b64encode(img).decode("utf-8")
+            }
+            response = requests.post(API_URL, headers=headers, json=payload)
+            return response.json()
+
+        output = query({
+            "image_path": f"{new_image_path}",
+            "parameters": {"candidate_labels": output_class},
+        })
+        max_component = max(output, key=lambda x: x['score'])
+        predicted_value, predicted_accuracy = max_component['label'], max_component['score']
+        return predicted_value, predicted_accuracy
+        
+    except Exception as e:
+        return f"Error processing image: {str(e)}", 0 
+
 
 def input_trash(input):
     messages = [

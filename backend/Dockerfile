@@ -10,6 +10,6 @@ COPY . .
 RUN apt-get update -qq && apt-get install -y build-essential
 RUN \
   pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.render.txt
 EXPOSE 8000
 ENTRYPOINT [ "uvicorn", "main:app", "--host", "0.0.0.0"]

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from pathlib import Path
-from utils import predict, input_trash
+from utils import predict, predict_zeroshot, input_trash
 import time
 import uvicorn
 import shutil
@@ -69,7 +69,7 @@ async def root():
     return {"message" : "This is a garbage classification API",
             "help": "Use /predict to get the output for classification"}
 
-@app.post("/predict")
+@app.post("/predict-resnet")
 async def predict_endpoint(file: UploadFile = File(...)):
     # Save the uploaded file
     upload_path = UPLOAD_DIR / file.filename
@@ -83,6 +83,22 @@ async def predict_endpoint(file: UploadFile = File(...)):
         "predicted_value": predicted_value,
         "predicted_accuracy": predicted_accuracy
     }
+
+@app.post("/predict")
+async def predict_zeroshot(file: UploadFile = File(...)):
+    # Save the uploaded file
+    upload_path = UPLOAD_DIR / file.filename
+    with upload_path.open("wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    predicted_value, predicted_accuracy = await predict_zeroshot(upload_path)
+
+    return {
+        "path": upload_path,
+        "predicted_value": predicted_value,
+        "predicted_accuracy": predicted_accuracy
+    }
+
 @app.post("/get-advice")
 async def give_advice(Trash: trash ):
     start_time = time.time()
