@@ -5,74 +5,39 @@ from pydantic import BaseModel
 from pathlib import Path
 from utils import predict, predict_zeroshot, input_trash
 import time
+import datetime
 import uvicorn
 import shutil
 import os
 
-# PUBLIC_IP_ADDRESS = os.environ.get("PUBLIC_IP_ADDRESS")
-# PUBLIC_DNS_ADDRESS = os.environ.get("PUBLIC_DNS_ADDRESS")
-# origins = [ 
-#     f"http://{PUBLIC_IP_ADDRESS}:8888",
-#     f"http://{PUBLIC_IP_ADDRESS}:8000",
-#     f"http://{PUBLIC_DNS_ADDRESS}:8888",
-#     f"http://{PUBLIC_DNS_ADDRESS}:8000",
-#     "http://localhost:8888", # For debugging
-#     "http://localhost:8000", # For debugging
-#     "http://localhost:3000", # For debugging
-# ]
-
+origins = [ 
+    "https://garbage-classification-web.vercel.app"
+]
 
 app = FastAPI(
-    title="🗑️ Garbage Classification",
+    title="Garbage Classification",
     summary= "This is an API that helps users classify waste and learn how to handle it"
 )
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_methods=["*"],
-#     allow_headers=["*"]
-# )
-
-# Define the upload directory
-UPLOAD_DIR = Path("upload")
-UPLOAD_DIR.mkdir(exist_ok=True)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 class trash(BaseModel):
     type_trash:  str
-    
-@app.get("/download/{id}")
-async def get_image(id: str):
-    try:
-        file_path = UPLOAD_DIR / id
-        return FileResponse(file_path)
-    except FileNotFoundError:
-        return {"error": "Image not found"}
-
-@app.post("/upload")
-async def upload_image(file: UploadFile = File(...)):
-    try:
-        if not os.path.exists(UPLOAD_DIR):
-            os.mkdir(UPLOAD_DIR)
-
-        # Save the uploaded file
-        upload_path = f"{UPLOAD_DIR}/{file.filename}"
-        with upload_path.open("wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        
-        return {"path": f"Upload successful: {upload_path}"}
-    except Exception as e:
-        return {"error": f"Server error: {str(e)}"}
-
-@app.get("/")
-async def root():
-    return {"message" : "This is a garbage classification API",
-            "help": "Use /predict to get the output for classification"}
 
 @app.post("/predict-resnet")
 async def predict_endpoint(file: UploadFile = File(...)):
+    if True:
+        return {
+            "message": "Our server is weak so this server is deprecated!"
+        }
+
     # Save the uploaded file
-    upload_path = UPLOAD_DIR / file.filename
+    upload_path = file.filename
     with upload_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
@@ -85,11 +50,12 @@ async def predict_endpoint(file: UploadFile = File(...)):
     }
 
 @app.post("/predict")
-async def predict_zeroshot(file: UploadFile = File(...)):
+async def predict_zeroshot(uploaded_file: UploadFile):
     # Save the uploaded file
-    upload_path = UPLOAD_DIR / file.filename
-    with upload_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    upload_path = f"/tmp/{(datetime.datetime.now()).timestamp()}.png"
+
+    with open(upload_path, "wb") as buffer:
+        shutil.copyfileobj(uploaded_file.file, buffer)
 
     predicted_value, predicted_accuracy = await predict_zeroshot(upload_path)
 
