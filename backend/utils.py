@@ -4,7 +4,7 @@
 import numpy as np
 import os
 import requests
-from openai import OpenAI
+# from openai import OpenAI
 from groq import Groq
 import base64
 
