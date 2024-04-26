@@ -32,7 +32,7 @@ async def predict(new_image_path):
     except Exception as e:
         return f"Error processing image: {str(e)}", 0
 
-async def predict_zeroshot(new_image_path):
+async def zeroshot(new_image_path):
     try:
         API_URL = "https://api-inference.huggingface.co/models/openai/clip-vit-large-patch14-336"
         headers = {"Authorization": f"Bearer {HF_API}"}
@@ -56,7 +56,7 @@ async def predict_zeroshot(new_image_path):
         return predicted_value, predicted_accuracy
         
     except Exception as e:
-        return f"Error processing image: {str(e)}", 0 
+        print(f"Error processing image: {str(e)}")
 
 
 def input_trash(input):

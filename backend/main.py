@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from pathlib import Path
-from utils import predict, predict_zeroshot, input_trash
+from utils import predict, zeroshot, input_trash
 import time
 import datetime
 import uvicorn
@@ -52,19 +52,24 @@ async def predict_endpoint(file: UploadFile = File(...)):
 
 @app.post("/predict")
 async def predict_zeroshot(file: UploadFile = File(...)):
-    # Save the uploaded file
-    upload_path = f"/tmp/{(datetime.datetime.now()).timestamp()}.png"
+    try:
+        # Save the uploaded file
+        upload_path = f"/tmp/{(datetime.datetime.now()).timestamp()}.png"
 
-    with open(upload_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        with open(upload_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        predicted_value, predicted_accuracy = await zeroshot(upload_path)
 
-    predicted_value, predicted_accuracy = await predict_zeroshot(upload_path)
-
-    return {
-        "path": upload_path,
-        "predicted_value": predicted_value,
-        "predicted_accuracy": predicted_accuracy
-    }
+        return {
+            "path": upload_path,
+            "predicted_value": predicted_value,
+            "predicted_accuracy": predicted_accuracy
+        }
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
 
 @app.post("/get-advice")
 async def give_advice(Trash: trash ):
