@@ -1,6 +1,7 @@
 name: Keepalive
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
 
@@ -10,4 +11,4 @@ jobs:
 
     steps:
       - name: Send keepalive request
-        run: curl https://garbage-classification-web.onrender.com
+        run: curl https://garbage-classification-web.onrender.com/
