@@ -4,10 +4,10 @@
 # This Dockerfile is only for debug purpose
 ###################################################
 
-FROM python:3.11-slim
+FROM python:3.10.12-slim
 WORKDIR /opt/app
 COPY . .
-RUN apt-get update -qq && apt-get install -y build-essential
+# RUN apt-get update -qq && apt-get install -y build-essential
 RUN \
   pip install --upgrade pip
 RUN pip install -r requirements.render.txt

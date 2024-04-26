@@ -37,10 +37,11 @@ async def predict_endpoint(file: UploadFile = File(...)):
         }
 
     # Save the uploaded file
-    upload_path = file.filename
-    with upload_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    upload_path = f"/tmp/{(datetime.datetime.now()).timestamp()}.png"
 
+    with open(upload_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
     predicted_value, predicted_accuracy = await predict(upload_path)
 
     return {
@@ -50,12 +51,12 @@ async def predict_endpoint(file: UploadFile = File(...)):
     }
 
 @app.post("/predict")
-async def predict_zeroshot(uploaded_file: UploadFile):
+async def predict_zeroshot(file: UploadFile = File(...)):
     # Save the uploaded file
     upload_path = f"/tmp/{(datetime.datetime.now()).timestamp()}.png"
 
     with open(upload_path, "wb") as buffer:
-        shutil.copyfileobj(uploaded_file.file, buffer)
+        shutil.copyfileobj(file.file, buffer)
 
     predicted_value, predicted_accuracy = await predict_zeroshot(upload_path)
 
